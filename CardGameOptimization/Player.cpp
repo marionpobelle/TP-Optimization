@@ -50,22 +50,23 @@ void Player::FillDeck()
 void Player::MonteCarlo()
 {
 	int randomIndexInDeck = rand() % _baseDeck.size();
-	//C'ets cette ligne qui fout la merde
 	_baseDeck.erase(_baseDeck.begin() + randomIndexInDeck);
-
-	int randomIndexInSet = rand() % cardManager->setList.size();
-	Card newCard = cardManager->setList[randomIndexInSet];
-	int nbDuplicates = 0;
-	for (int i = 0; i < _baseDeck.size(); i++)
-	{
-		if (newCard.IsEqual(_baseDeck[i])) {
-			nbDuplicates++;
+	while(_baseDeck.size() < 30) {
+		int randomIndexInSet = rand() % cardManager->setList.size();
+		Card newCard = cardManager->setList[randomIndexInSet];
+		int nbDuplicates = 0;
+		for (int i = 0; i < _baseDeck.size(); i++)
+		{
+			if (newCard.IsEqual(_baseDeck[i])) {
+				nbDuplicates++;
+			}
+		}
+		if (nbDuplicates < 2)
+		{
+			_baseDeck.push_back(newCard);
 		}
 	}
-	if (nbDuplicates < 2)
-	{
-		_baseDeck.push_back(newCard);
-	}
+	
 }
 
 void Player::FillHand() 

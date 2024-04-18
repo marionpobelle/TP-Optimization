@@ -20,7 +20,7 @@ int BoardAttackSum(std::vector<Card> playerBoard);
 void ResetGameWithoutDeckChange();
 void ResetGameGlobal();
 void WriteAmountOfTurnsPerGameHistogram(std::vector<int>& nbTurnData);
-void WriteAmountOfTurnsPerIteHistogram(std::vector<float>& averageTurnData);
+void WriteAmountOfTurnsPerIteHistogram(std::vector<int>& averageTurnData);
 void WriteWinratePerAmountOfGames(std::vector<float>& winRateData, int nbGames);
 void WriteWinrateRefPerIteration(std::vector<float>& winRateData, int nbIte);
 
@@ -28,7 +28,7 @@ int main()
 {
     srand(time(NULL));
     std::vector<float> winrateRefData = std::vector<float>();
-    std::vector<float> averageTurnPerIteData = std::vector<float>();
+    std::vector<int> averageTurnPerIteData = std::vector<int>();
 
     for (int k= 0; k < 1000; k++) 
     {
@@ -87,13 +87,12 @@ int main()
         }
         //WriteAmountOfTurnsPerGameHistogram(nbTurnPerGame);
         //WriteWinratePerAmountOfGames(winratePerAmountOfGames, 1000);
-        averageTurnPerIteData.push_back(std::accumulate(nbTurnPerGame.begin(), nbTurnPerGame.end(), 0.0) / nbTurnPerGame.size());
+        averageTurnPerIteData.push_back((ceil)(std::accumulate(nbTurnPerGame.begin(), nbTurnPerGame.end(), 0.0) / nbTurnPerGame.size()));
         nbTurnPerGame.clear();
 
         player1Winrate = (float)((player1Winrate / 1000.0f) * 100.0f);
         std::cout << "Iteration : " << k << " Player 1 winrate is : " << player1Winrate << std::endl;
         player1->currentWinrate = player1Winrate;
-        //C'est celle la qui fout la merde, c'est ResetPlayerGlobal() qui crash
         ResetGameGlobal();
         winrateRefData.push_back((float)player1->referenceWinrate);
         
@@ -145,7 +144,7 @@ void WriteAmountOfTurnsPerGameHistogram(std::vector<int>& nbTurnData) {
     }
 }
 
-void WriteAmountOfTurnsPerIteHistogram(std::vector<float>& averageTurnData) {
+void WriteAmountOfTurnsPerIteHistogram(std::vector<int>& averageTurnData) {
     csvfile csv("AmountOfItePerAverageOfTurnData.csv");
     csv << "Average amount of turns" << "Amount of iteration" << endrow;
     int max_value = *max_element(averageTurnData.begin(), averageTurnData.end());
