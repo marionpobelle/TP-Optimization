@@ -9,8 +9,11 @@ Player::Player()
 	_hand = std::vector<Card>();
 	FillDeck();
 	_baseDeck = _deck;
-	WriteAmountOfCardsPerCostHistogram(_deck);
+	_referenceDeck = _deck;
+	WriteAmountOfCardsPerCostHistogram(_deck, "Amount of card per cost Deck1");
 	FillHand();
+	currentWinrate = 0.0f;
+	referenceWinrate = 0.0f;
 }
 
 std::vector<Card> Player::GetHand() 
@@ -18,9 +21,13 @@ std::vector<Card> Player::GetHand()
 	return _hand;
 }
 
+std::vector<Card> Player::GetRefDeck() 
+{
+	return _referenceDeck;
+}
+
 void Player::FillDeck() 
 {
-	CardManager* cardManager = new CardManager();
 	while (_deck.size() < 30)
 	{
 		int randomIndexInSet = rand() % cardManager->setList.size();
@@ -37,6 +44,27 @@ void Player::FillDeck()
 			_deck.push_back(newCard);
 		}
 		nbDuplicates = 0;
+	}
+}
+
+void Player::MonteCarlo()
+{
+	int randomIndexInDeck = rand() % _baseDeck.size();
+	//C'ets cette ligne qui fout la merde
+	_baseDeck.erase(_baseDeck.begin() + randomIndexInDeck);
+
+	int randomIndexInSet = rand() % cardManager->setList.size();
+	Card newCard = cardManager->setList[randomIndexInSet];
+	int nbDuplicates = 0;
+	for (int i = 0; i < _baseDeck.size(); i++)
+	{
+		if (newCard.IsEqual(_baseDeck[i])) {
+			nbDuplicates++;
+		}
+	}
+	if (nbDuplicates < 2)
+	{
+		_baseDeck.push_back(newCard);
 	}
 }
 
@@ -87,6 +115,24 @@ void Player::ResetPlayer() {
 	FillHand();
 }
 
+void Player::ResetPlayerGlobal() {
+	if (currentWinrate > referenceWinrate)
+	{
+		referenceWinrate = currentWinrate;
+		_referenceDeck = _baseDeck;
+	}
+	else if (currentWinrate <= referenceWinrate)
+	{
+		_baseDeck = _referenceDeck;
+	}
+	MonteCarlo();
+	_deck = _baseDeck;
+	_mana = 0;
+	_pv = 20;
+	_hand.clear();
+	FillHand();
+}
+
 Card Player::PlayHigherCostCard() {
 	Card higherCostCard = Card(0,0);
 	int indexHigherCostCard = -1;
@@ -111,8 +157,8 @@ Card Player::PlayHigherCostCard() {
 	return higherCostCard;
 }
 
-void Player::WriteAmountOfCardsPerCostHistogram(std::vector<Card> deckData) {
-	csvfile csv("AmountOfCardsPerCostData.csv");
+void Player::WriteAmountOfCardsPerCostHistogram(std::vector<Card> deckData, std::string usedDeck) {
+	csvfile csv(usedDeck + ".csv");
 	csv << "Cost" << "Amount of cards" << endrow;
 	std::vector<int> costForEachCard = std::vector<int>();
 	for (int i = 0; i < deckData.size(); i++) {

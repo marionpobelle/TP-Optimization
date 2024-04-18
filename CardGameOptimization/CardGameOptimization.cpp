@@ -6,7 +6,9 @@
 #include "CardManager.h"
 #include "Player.h"
 #include <time.h>
+#include <algorithm>
 #include "csvfile.h"
+#include <numeric>
 
 Player* player1 = new Player();
 Player* player2 = new Player();
@@ -16,81 +18,104 @@ std::vector<Card> player2Board = std::vector<Card>();
 
 int BoardAttackSum(std::vector<Card> playerBoard);
 void ResetGameWithoutDeckChange();
+void ResetGameGlobal();
 void WriteAmountOfTurnsPerGameHistogram(std::vector<int>& nbTurnData);
+void WriteAmountOfTurnsPerIteHistogram(std::vector<float>& averageTurnData);
 void WriteWinratePerAmountOfGames(std::vector<float>& winRateData, int nbGames);
+void WriteWinrateRefPerIteration(std::vector<float>& winRateData, int nbIte);
 
 int main()
 {
     srand(time(NULL));
-    int player1Winrate = 0;
-    std::vector<int> nbTurnPerGame = std::vector<int>();
-    std::vector<float> winratePerAmountOfGames = std::vector<float>();
-    for (int i = 0; i < 1000; i++)
-    {
-        int nbTurns = 0;
-        while (player1->GetPV() > 0 && player2->GetPV() > 0)
-        {
-            if (i < 500) 
-            {
-                //PLAYER 1 TURN
-                player1->IncrementMana(1);
-                player1->IncrementHand();
-                player1Board.push_back(player1->PlayHigherCostCard());
-                int player1InflictedDamage = BoardAttackSum(player1Board);
-                player2->DecreasePV(player1InflictedDamage);
-                if (player2->GetPV() <= 0) continue;
+    std::vector<float> winrateRefData = std::vector<float>();
+    std::vector<float> averageTurnPerIteData = std::vector<float>();
 
-                //PLAYER 2 TURN
-                player2->IncrementMana(1);
-                player2->IncrementHand();
-                player2Board.push_back(player2->PlayHigherCostCard());
-                int player2InflictedDamage = BoardAttackSum(player2Board);
-                player1->DecreasePV(player2InflictedDamage);
-            }
-            else if (i >= 500) 
-            {
-                //PLAYER 2 TURN
-                player2->IncrementMana(1);
-                player2->IncrementHand();
-                player2Board.push_back(player2->PlayHigherCostCard());
-                int player2InflictedDamage = BoardAttackSum(player2Board);
-                player1->DecreasePV(player2InflictedDamage);
-                if (player1->GetPV() <= 0) continue;
-
-                //PLAYER 1 TURN
-                player1->IncrementMana(1);
-                player1->IncrementHand();
-                player1Board.push_back(player1->PlayHigherCostCard());
-                int player1InflictedDamage = BoardAttackSum(player1Board);
-                player2->DecreasePV(player1InflictedDamage);       
-            }
-            nbTurns++;
-        }
-        if (player1->GetPV() > 0 && player2->GetPV() <= 0)
-        {
-            std::cout << "Game " << i+1 << " : Player 1 won !\n" << std::endl;
-            player1Winrate++;
-        }
-        winratePerAmountOfGames.push_back((float)((player1Winrate / (i + 1.0f)) * 100.0f));
-        nbTurnPerGame.push_back(nbTurns);
-        ResetGameWithoutDeckChange();
-    }
-    std::cout << "All games were played ! Computing player 1 winrate...\n" << std::endl;
-    player1Winrate = (float)((player1Winrate / 1000.0f) * 100.0f);
-    std::cout << "Player 1 winrate is : " << player1Winrate << std::endl;
-    std::cout << "Amount of turn per game :\n" << std::endl; 
-    for (int j = 0; j < nbTurnPerGame.size(); j++)
+    for (int k= 0; k < 1000; k++) 
     {
-        std::cout << " Game " << j+1 << " nb turns : " << nbTurnPerGame[j] << std::endl;
+        int player1Winrate = 0;
+        std::vector<int> nbTurnPerGame = std::vector<int>();
+        std::vector<float> winratePerAmountOfGames = std::vector<float>();
+        for (int i = 0; i < 1000; i++)
+        {
+            int nbTurns = 0;
+            while (player1->GetPV() > 0 && player2->GetPV() > 0)
+            {
+                if (i < 500)
+                {
+                    //PLAYER 1 TURN
+                    player1->IncrementMana(1);
+                    player1->IncrementHand();
+                    player1Board.push_back(player1->PlayHigherCostCard());
+                    int player1InflictedDamage = BoardAttackSum(player1Board);
+                    player2->DecreasePV(player1InflictedDamage);
+                    if (player2->GetPV() <= 0) continue;
+
+                    //PLAYER 2 TURN
+                    player2->IncrementMana(1);
+                    player2->IncrementHand();
+                    player2Board.push_back(player2->PlayHigherCostCard());
+                    int player2InflictedDamage = BoardAttackSum(player2Board);
+                    player1->DecreasePV(player2InflictedDamage);
+                }
+                else if (i >= 500)
+                {
+                    //PLAYER 2 TURN
+                    player2->IncrementMana(1);
+                    player2->IncrementHand();
+                    player2Board.push_back(player2->PlayHigherCostCard());
+                    int player2InflictedDamage = BoardAttackSum(player2Board);
+                    player1->DecreasePV(player2InflictedDamage);
+                    if (player1->GetPV() <= 0) continue;
+
+                    //PLAYER 1 TURN
+                    player1->IncrementMana(1);
+                    player1->IncrementHand();
+                    player1Board.push_back(player1->PlayHigherCostCard());
+                    int player1InflictedDamage = BoardAttackSum(player1Board);
+                    player2->DecreasePV(player1InflictedDamage);
+                }
+                nbTurns++;
+            }
+            if (player1->GetPV() > 0 && player2->GetPV() <= 0)
+            {
+                player1Winrate++;
+            }
+            winratePerAmountOfGames.push_back((float)((player1Winrate / (i + 1.0f)) * 100.0f));
+            nbTurnPerGame.push_back(nbTurns);
+            ResetGameWithoutDeckChange();
+            
+        }
+        //WriteAmountOfTurnsPerGameHistogram(nbTurnPerGame);
+        //WriteWinratePerAmountOfGames(winratePerAmountOfGames, 1000);
+        averageTurnPerIteData.push_back(std::accumulate(nbTurnPerGame.begin(), nbTurnPerGame.end(), 0.0) / nbTurnPerGame.size());
+        nbTurnPerGame.clear();
+
+        player1Winrate = (float)((player1Winrate / 1000.0f) * 100.0f);
+        std::cout << "Iteration : " << k << " Player 1 winrate is : " << player1Winrate << std::endl;
+        player1->currentWinrate = player1Winrate;
+        //C'est celle la qui fout la merde, c'est ResetPlayerGlobal() qui crash
+        ResetGameGlobal();
+        winrateRefData.push_back((float)player1->referenceWinrate);
+        
     }
-    WriteAmountOfTurnsPerGameHistogram(nbTurnPerGame);
-    WriteWinratePerAmountOfGames(winratePerAmountOfGames, 1000);
+    player1->WriteAmountOfCardsPerCostHistogram(player1->GetRefDeck(), "Amount of card per cost Deck2");
+    WriteAmountOfTurnsPerIteHistogram(averageTurnPerIteData);
+    WriteWinrateRefPerIteration(winrateRefData, 1000);
+    std::cout << "Final player 1 reference winrate : " << player1->referenceWinrate << std::endl;
 }
 
 void ResetGameWithoutDeckChange() 
 {
     player1->ResetPlayer();
     player2->ResetPlayer();
+    player1Board.clear();
+    player2Board.clear();
+}
+
+void ResetGameGlobal() 
+{
+    player1->ResetPlayerGlobal();
+    player2->ResetPlayerGlobal();
     player1Board.clear();
     player2Board.clear();
 }
@@ -120,10 +145,35 @@ void WriteAmountOfTurnsPerGameHistogram(std::vector<int>& nbTurnData) {
     }
 }
 
+void WriteAmountOfTurnsPerIteHistogram(std::vector<float>& averageTurnData) {
+    csvfile csv("AmountOfItePerAverageOfTurnData.csv");
+    csv << "Average amount of turns" << "Amount of iteration" << endrow;
+    int max_value = *max_element(averageTurnData.begin(), averageTurnData.end());
+    std::vector<int> amountOfIte = std::vector<int>();
+    for (int i = max_value; i >= 0; --i)
+    {
+        amountOfIte.push_back(std::count(averageTurnData.begin(), averageTurnData.end(), i));
+    }
+    std::reverse(amountOfIte.begin(), amountOfIte.end());
+    for (int i = max_value; i >= 0; --i)
+    {
+        csv << i + 1 << amountOfIte[i] << endrow;
+    }
+}
+
 void WriteWinratePerAmountOfGames(std::vector<float>& winRateData, int nbGames) {
     csvfile csv("WinratePerAmountOfGamesData.csv");
     csv <<  "Amount of games" << "WinRate" << endrow;
     for (int i = 0; i < nbGames; i++)
+    {
+        csv << i + 1 << winRateData[i] << endrow;
+    }
+}
+
+void WriteWinrateRefPerIteration(std::vector<float>& winRateData, int nbIte) {
+    csvfile csv("WinratePerAmountOfIteData.csv");
+    csv << "Iterations" << "WinRate" << endrow;
+    for (int i = 0; i < nbIte; i++)
     {
         csv << i + 1 << winRateData[i] << endrow;
     }
