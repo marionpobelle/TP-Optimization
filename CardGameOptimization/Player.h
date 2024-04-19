@@ -41,6 +41,7 @@ public:
 
 	void WriteAmountOfCardsPerAbilityHistogram(std::vector<Card> deckData, std::string usedDeck);
 
+	void WriteJSONDeckFile();
 
 private:
 	int _mana;
@@ -58,6 +59,8 @@ private:
 	void MonteCarlo();
 
 	void FillHand();
+
+
 
 	
 };

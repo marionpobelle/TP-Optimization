@@ -246,3 +246,18 @@ void Player::WriteAmountOfCardsPerAbilityHistogram(std::vector<Card> deckData, s
 	csv << "Trample" << amountOfTrample << endrow;
 	csv << "Provoc + Trample" << amountOfProvocTrample << endrow;
 }
+
+void Player::WriteJSONDeckFile() {
+	std::ofstream myfile;
+	myfile.open("deck_marion.json");
+	myfile << "{\"Cards\":[";
+
+	for (int i = 0; i < _referenceDeck.size() - 1; i++)
+	{
+		myfile << _referenceDeck[i] << ", ";
+	}
+	myfile <<_referenceDeck[_referenceDeck.size() - 1];
+	myfile << "]}";
+	
+	myfile.close();
+}

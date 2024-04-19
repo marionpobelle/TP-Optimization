@@ -235,6 +235,7 @@ int main()
     player1->WriteAmountOfCardsPerAtkHistogram(player1->GetRefDeck(), "Amount of card per attack Deck2");
     player1->WriteAmountOfCardsPerDefHistogram(player1->GetRefDeck(), "Amount of card per def Deck2");
     player1->WriteAmountOfCardsPerAbilityHistogram(player1->GetRefDeck(), "Amount of card per ability Deck2");
+    player1->WriteJSONDeckFile();
     WriteAmountOfTurnsPerIteHistogram(averageTurnPerIteData);
     WriteWinrateRefPerIteration(winrateRefData, 1000);
     std::cout << "Final player 1 reference winrate : " << player1->referenceWinrate << std::endl;
