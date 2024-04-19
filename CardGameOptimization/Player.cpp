@@ -11,6 +11,9 @@ Player::Player()
 	_baseDeck = _deck;
 	_referenceDeck = _deck;
 	WriteAmountOfCardsPerCostHistogram(_deck, "Amount of card per cost Deck1");
+	WriteAmountOfCardsPerAtkHistogram(_deck, "Amount of card per atk Deck1");
+	WriteAmountOfCardsPerDefHistogram(_deck, "Amount of card per def Deck1");
+	WriteAmountOfCardsPerAbilityHistogram(_deck, "Amount of card per ability Deck1");
 	FillHand();
 	currentWinrate = 0.0f;
 	referenceWinrate = 0.0f;
@@ -135,7 +138,7 @@ void Player::ResetPlayerGlobal() {
 }
 
 Card Player::PlayHigherCostCard() {
-	Card higherCostCard = Card(0,0, false);
+	Card higherCostCard = Card(0,0,0);
 	int indexHigherCostCard = -1;
 	for (int i = 0; i < _hand.size(); i++) {
 		if (_hand[i].GetCardCost() == higherCostCard.GetCardCost()) 
@@ -148,13 +151,13 @@ Card Player::PlayHigherCostCard() {
 			}
 			else continue;
 		}
-		else if (_hand[i].GetCardCost() > higherCostCard.GetCardCost())
+		else if (_hand[i].GetCardCost() > higherCostCard.GetCardCost() && _hand[i].GetCardCost() <= _mana)
 		{
 			higherCostCard.CopyCard(_hand[i]);
 			indexHigherCostCard = i;
 		}
 	}
-	_hand.erase(_hand.begin() + indexHigherCostCard);
+	if(!higherCostCard.IsEqual(Card(0,0,0))) _hand.erase(_hand.begin() + indexHigherCostCard);
 	return higherCostCard;
 }
 
@@ -176,4 +179,64 @@ void Player::WriteAmountOfCardsPerCostHistogram(std::vector<Card> deckData, std:
 	{
 		csv << i << amountOfCards[i] << endrow;
 	}
+}
+
+void Player::WriteAmountOfCardsPerAtkHistogram(std::vector<Card> deckData, std::string usedDeck) {
+	csvfile csv(usedDeck + ".csv");
+	csv << "Attack" << "Amount of cards" << endrow;
+	std::vector<int> attackForEachCard = std::vector<int>();
+	for (int i = 0; i < deckData.size(); i++) {
+		attackForEachCard.push_back(deckData[i].GetCardATK());
+	}
+	int max_value = *max_element(attackForEachCard.begin(), attackForEachCard.end());
+	std::vector<int> amountOfCards = std::vector<int>();
+	for (int i = max_value; i >= 0; --i)
+	{
+		amountOfCards.push_back(std::count(attackForEachCard.begin(), attackForEachCard.end(), i));
+	}
+	std::reverse(amountOfCards.begin(), amountOfCards.end());
+	for (int i = max_value; i >= 0; --i)
+	{
+		csv << i << amountOfCards[i] << endrow;
+	}
+}
+
+void Player::WriteAmountOfCardsPerDefHistogram(std::vector<Card> deckData, std::string usedDeck) {
+	csvfile csv(usedDeck + ".csv");
+	csv << "Def" << "Amount of cards" << endrow;
+	std::vector<int> defForEachCard = std::vector<int>();
+	for (int i = 0; i < deckData.size(); i++) {
+		defForEachCard.push_back(deckData[i].GetCardDEF());
+	}
+	int max_value = *max_element(defForEachCard.begin(), defForEachCard.end());
+	std::vector<int> amountOfCards = std::vector<int>();
+	for (int i = max_value; i >= 0; --i)
+	{
+		amountOfCards.push_back(std::count(defForEachCard.begin(), defForEachCard.end(), i));
+	}
+	std::reverse(amountOfCards.begin(), amountOfCards.end());
+	for (int i = max_value; i >= 0; --i)
+	{
+		csv << i << amountOfCards[i] << endrow;
+	}
+}
+
+void Player::WriteAmountOfCardsPerAbilityHistogram(std::vector<Card> deckData, std::string usedDeck) {
+	csvfile csv(usedDeck + ".csv");
+	csv << " " << "Amount of cards" << endrow;
+	int amountOfNoAbility = 0;
+	int amountOfProvoc = 0;
+	for (int i = 0; i < deckData.size(); i++)
+	{
+		if (deckData[i].GetCardProvoc() == 1) { // Later here || for each ability to check if ther eis at least one
+			if (deckData[i].GetCardProvoc() == 1) amountOfProvoc++;
+		}
+		else
+		{
+			amountOfNoAbility++;
+		}
+
+	}
+	csv << "No ability" << amountOfNoAbility << endrow;
+	csv << "Provoc" << amountOfProvoc << endrow;
 }

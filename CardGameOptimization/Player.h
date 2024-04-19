@@ -35,6 +35,13 @@ public:
 
 	void WriteAmountOfCardsPerCostHistogram(std::vector<Card> deckData, std::string usedDeck);
 
+	void WriteAmountOfCardsPerAtkHistogram(std::vector<Card> deckData, std::string usedDeck);
+
+	void WriteAmountOfCardsPerDefHistogram(std::vector<Card> deckData, std::string usedDeck);
+
+	void WriteAmountOfCardsPerAbilityHistogram(std::vector<Card> deckData, std::string usedDeck);
+
+
 private:
 	int _mana;
 	int _pv;
