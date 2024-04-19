@@ -47,10 +47,11 @@ int main()
                 if (i < 500)
                 {
                     //PLAYER 1 TURN
+                    int trampleDamage = 0;
                     player1->IncrementMana(1);
                     player1->IncrementHand();
                     Card cardToPlay = player1->PlayHigherCostCard();
-                    if (cardToPlay.IsEqual(Card(0, 0, 0))) 
+                    if (cardToPlay.IsEqual(Card(0, 0, false, false))) 
                     {
                         //Do nothing
                     }
@@ -64,6 +65,10 @@ int main()
                             int attackingCardIndex = 0;
                             while (!player2Board[indexProvoc].IsCardDead() && player1Board.size() > 0)
                             {
+                                if (player1Board[attackingCardIndex].GetCardATK() > player2Board[indexProvoc].GetCardDEF() && player1Board[attackingCardIndex].GetCardTrample())
+                                {
+                                    trampleDamage = player1Board[attackingCardIndex].GetCardATK() - player2Board[indexProvoc].GetCardDEF();
+                                }
                                 player2Board[indexProvoc].DamageCardCurrentDEF(player1Board[attackingCardIndex].GetCardATK());
                                 player1Board[attackingCardIndex].DamageCardCurrentDEF(player2Board[indexProvoc].GetCardATK());
                                 if (player1Board[attackingCardIndex].IsCardDead()) player1Board.erase(player1Board.begin() + attackingCardIndex);
@@ -73,15 +78,15 @@ int main()
                         }
                         //
                     }
-                    int player1InflictedDamage = BoardAttackSum(player1Board);
+                    int player1InflictedDamage = BoardAttackSum(player1Board) + trampleDamage;
                     player2->DecreasePV(player1InflictedDamage);
                     if (player2->GetPV() <= 0) continue;
-
+                    trampleDamage = 0;
                     //PLAYER 2 TURN
                     player2->IncrementMana(1);
                     player2->IncrementHand();
                     cardToPlay = player2->PlayHigherCostCard();
-                    if (cardToPlay.IsEqual(Card(0, 0, 0)))
+                    if (cardToPlay.IsEqual(Card(0, 0, false, false)))
                     {
                         //Do nothing
                     }
@@ -95,6 +100,10 @@ int main()
                             int attackingCardIndex = 0;
                             while (!player1Board[indexProvoc].IsCardDead() && player2Board.size() > 0)
                             {
+                                if (player2Board[attackingCardIndex].GetCardATK() > player1Board[indexProvoc].GetCardDEF() && player2Board[attackingCardIndex].GetCardTrample())
+                                {
+                                    trampleDamage = player2Board[attackingCardIndex].GetCardATK() - player1Board[indexProvoc].GetCardDEF();
+                                }
                                 player1Board[indexProvoc].DamageCardCurrentDEF(player2Board[attackingCardIndex].GetCardATK());
                                 player2Board[attackingCardIndex].DamageCardCurrentDEF(player1Board[indexProvoc].GetCardATK());
                                 if (player2Board[attackingCardIndex].IsCardDead()) player2Board.erase(player2Board.begin() + attackingCardIndex);
@@ -104,7 +113,7 @@ int main()
                         }
                         //
                     }
-                    int player2InflictedDamage = BoardAttackSum(player2Board);
+                    int player2InflictedDamage = BoardAttackSum(player2Board) + trampleDamage;
                     player1->DecreasePV(player2InflictedDamage);
                     //Healing cards
                     for (Card card : player1Board) 
@@ -115,14 +124,16 @@ int main()
                     {
                         card.HealCard();
                     }
+                    trampleDamage = 0;
                 }
                 else if (i >= 500)
                 {
                     //PLAYER 2 TURN
+                    int trampleDamage = 0;
                     player2->IncrementMana(1);
                     player2->IncrementHand();
                     Card cardToPlay = player2->PlayHigherCostCard();
-                    if (cardToPlay.IsEqual(Card(0, 0, 0)))
+                    if (cardToPlay.IsEqual(Card(0, 0, false, false)))
                     {
                         //Do nothing
                     }
@@ -136,6 +147,10 @@ int main()
                             int attackingCardIndex = 0;
                             while (!player1Board[indexProvoc].IsCardDead() && player2Board.size() > 0)
                             {
+                                if (player2Board[attackingCardIndex].GetCardATK() > player1Board[indexProvoc].GetCardDEF() && player2Board[attackingCardIndex].GetCardTrample())
+                                {
+                                    trampleDamage = player2Board[attackingCardIndex].GetCardATK() - player1Board[indexProvoc].GetCardDEF();
+                                }
                                 player1Board[indexProvoc].DamageCardCurrentDEF(player2Board[attackingCardIndex].GetCardATK());
                                 player2Board[attackingCardIndex].DamageCardCurrentDEF(player1Board[indexProvoc].GetCardATK());
                                 if (player2Board[attackingCardIndex].IsCardDead()) player2Board.erase(player2Board.begin() + attackingCardIndex);
@@ -146,15 +161,15 @@ int main()
                         //
                     }
                     
-                    int player2InflictedDamage = BoardAttackSum(player2Board);
+                    int player2InflictedDamage = BoardAttackSum(player2Board) + trampleDamage;
                     player1->DecreasePV(player2InflictedDamage);
                     if (player1->GetPV() <= 0) continue;
-
+                    trampleDamage = 0;
                     //PLAYER 1 TURN
                     player1->IncrementMana(1);
                     player1->IncrementHand();
                     cardToPlay = player1->PlayHigherCostCard();
-                    if (cardToPlay.IsEqual(Card(0, 0, 0)))
+                    if (cardToPlay.IsEqual(Card(0, 0, false, false)))
                     {
                         //Do nothing
                     }
@@ -168,6 +183,10 @@ int main()
                             int attackingCardIndex = 0;
                             while (!player2Board[indexProvoc].IsCardDead() && player1Board.size() > 0)
                             {
+                                if (player1Board[attackingCardIndex].GetCardATK() > player2Board[indexProvoc].GetCardDEF() && player1Board[attackingCardIndex].GetCardTrample())
+                                {
+                                    trampleDamage = player1Board[attackingCardIndex].GetCardATK() - player2Board[indexProvoc].GetCardDEF();
+                                }
                                 player2Board[indexProvoc].DamageCardCurrentDEF(player1Board[attackingCardIndex].GetCardATK());
                                 player1Board[attackingCardIndex].DamageCardCurrentDEF(player2Board[indexProvoc].GetCardATK());
                                 if (player1Board[attackingCardIndex].IsCardDead()) player1Board.erase(player1Board.begin() + attackingCardIndex);
@@ -177,7 +196,7 @@ int main()
                         }
                         //
                     }
-                    int player1InflictedDamage = BoardAttackSum(player1Board);
+                    int player1InflictedDamage = BoardAttackSum(player1Board) + trampleDamage;
                     player2->DecreasePV(player1InflictedDamage);
                     //Healing cards
                     for (Card card : player1Board)
@@ -250,14 +269,14 @@ int BoardAttackSum(std::vector<Card> playerBoard) {
 
 int GetFirstProvocCardIndex(std::vector<Card> playerBoard) {
     for (int i = 0; i < playerBoard.size(); i++) {
-        if (playerBoard[i].GetCardProvoc() == 1) return i;
+        if (playerBoard[i].GetCardProvoc() == true) return i;
     }
     return -1;
 }
 
 bool CheckForProvoc(std::vector<Card> playerBoard) {
     for (int i = 0; i < playerBoard.size(); i++) {
-        if (playerBoard[i].GetCardProvoc() == 1) return true;
+        if (playerBoard[i].GetCardProvoc() == true) return true;
     }
     return false;
 }

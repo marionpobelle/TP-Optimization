@@ -1,10 +1,11 @@
 #include "Card.h"
 
-Card::Card(int atk, int def, int provoc) {
+Card::Card(int atk, int def, bool provoc, bool trample) {
     _atk = atk;
     _maxDef = def;
     _provoc = provoc;
-    _cost = ceil(((_atk + _maxDef) / 2.0f) + provoc * 1.5f);
+    _trample = trample;
+    _cost = ceil(((_atk + _maxDef) / 2.0f) + provoc * 1.5f + trample);
 }
 
 int Card::GetCardATK() {
@@ -35,12 +36,16 @@ float Card::GetCardCost() {
     return _cost;
 }
 
-int Card::GetCardProvoc() {
+bool Card::GetCardProvoc() {
     return _provoc;
 }
 
+bool Card::GetCardTrample() {
+    return _trample;
+}
+
 bool Card::IsEqual(Card card) {
-    return (_atk == card.GetCardATK() && _maxDef == card.GetCardDEF() && _cost == card.GetCardCost() && _provoc == card.GetCardProvoc());
+    return (_atk == card.GetCardATK() && _maxDef == card.GetCardDEF() && _cost == card.GetCardCost() && _provoc == card.GetCardProvoc() && _trample == card.GetCardTrample());
 }
 
 void Card::CopyCard(Card card) {
@@ -48,4 +53,5 @@ void Card::CopyCard(Card card) {
     _maxDef = card.GetCardDEF();
     _cost = card.GetCardCost();
     _provoc = card.GetCardProvoc();
+    _trample = card.GetCardTrample();
 }

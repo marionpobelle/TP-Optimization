@@ -6,7 +6,7 @@ class Card
 {
 public:
 
-    Card(int atk, int def, int provoc);
+    Card(int atk, int def, bool provoc, bool trample);
 
     int GetCardATK();
 
@@ -22,7 +22,9 @@ public:
 
     float GetCardCost();
 
-    int GetCardProvoc();
+    bool GetCardProvoc();
+
+    bool GetCardTrample();
 
     bool IsEqual(Card card);
 
@@ -33,7 +35,7 @@ private:
     int _atk;
     int _maxDef;
     int _currentDef;
-    //0 is false, 1 is true
-    int _provoc;
+    bool _provoc;
+    bool _trample;
 
 };

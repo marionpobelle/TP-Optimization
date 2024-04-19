@@ -138,7 +138,7 @@ void Player::ResetPlayerGlobal() {
 }
 
 Card Player::PlayHigherCostCard() {
-	Card higherCostCard = Card(0,0,0);
+	Card higherCostCard = Card(0,0,false,false);
 	int indexHigherCostCard = -1;
 	for (int i = 0; i < _hand.size(); i++) {
 		if (_hand[i].GetCardCost() == higherCostCard.GetCardCost()) 
@@ -157,7 +157,7 @@ Card Player::PlayHigherCostCard() {
 			indexHigherCostCard = i;
 		}
 	}
-	if(!higherCostCard.IsEqual(Card(0,0,0))) _hand.erase(_hand.begin() + indexHigherCostCard);
+	if(!higherCostCard.IsEqual(Card(0,0,false,false))) _hand.erase(_hand.begin() + indexHigherCostCard);
 	return higherCostCard;
 }
 
@@ -226,10 +226,14 @@ void Player::WriteAmountOfCardsPerAbilityHistogram(std::vector<Card> deckData, s
 	csv << " " << "Amount of cards" << endrow;
 	int amountOfNoAbility = 0;
 	int amountOfProvoc = 0;
+	int amountOfTrample = 0;
+	int amountOfProvocTrample = 0;
 	for (int i = 0; i < deckData.size(); i++)
 	{
-		if (deckData[i].GetCardProvoc() == 1) { // Later here || for each ability to check if ther eis at least one
-			if (deckData[i].GetCardProvoc() == 1) amountOfProvoc++;
+		if (deckData[i].GetCardProvoc() == true || deckData[i].GetCardTrample() == true) {
+			if (deckData[i].GetCardProvoc() == true && deckData[i].GetCardTrample() == false) amountOfProvoc++;
+			else if (deckData[i].GetCardProvoc() == false && deckData[i].GetCardTrample() == true) amountOfTrample++;
+			else if (deckData[i].GetCardProvoc() == true && deckData[i].GetCardTrample() == true) amountOfProvocTrample++;
 		}
 		else
 		{
@@ -239,4 +243,6 @@ void Player::WriteAmountOfCardsPerAbilityHistogram(std::vector<Card> deckData, s
 	}
 	csv << "No ability" << amountOfNoAbility << endrow;
 	csv << "Provoc" << amountOfProvoc << endrow;
+	csv << "Trample" << amountOfTrample << endrow;
+	csv << "Provoc + Trample" << amountOfProvocTrample << endrow;
 }

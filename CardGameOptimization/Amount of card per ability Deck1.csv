@@ -1,3 +1,5 @@
 " ";"Amount of cards";
-"No ability";15;
-"Provoc";15;
+"No ability";12;
+"Provoc";5;
+"Trample";10;
+"Provoc + Trample";3;
