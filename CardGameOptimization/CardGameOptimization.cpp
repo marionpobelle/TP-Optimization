@@ -17,8 +17,12 @@ std::vector<Card> player1Board = std::vector<Card>();
 std::vector<Card> player2Board = std::vector<Card>();
 
 int BoardAttackSum(std::vector<Card> playerBoard);
+int GetFirstProvocCardIndex(std::vector<Card> playerBoard);
+bool CheckForProvoc(std::vector<Card> playerBoard);
+
 void ResetGameWithoutDeckChange();
 void ResetGameGlobal();
+
 void WriteAmountOfTurnsPerGameHistogram(std::vector<int>& nbTurnData);
 void WriteAmountOfTurnsPerIteHistogram(std::vector<int>& averageTurnData);
 void WriteWinratePerAmountOfGames(std::vector<float>& winRateData, int nbGames);
@@ -46,6 +50,21 @@ int main()
                     player1->IncrementMana(1);
                     player1->IncrementHand();
                     player1Board.push_back(player1->PlayHigherCostCard());
+                    //PROVOC STUFF HAPPENS HERE
+                    while (CheckForProvoc(player2Board) && player1Board.size() > 0)
+                    {
+                        int indexProvoc = GetFirstProvocCardIndex(player2Board);
+                        int attackingCardIndex = 0;
+                        while (!player2Board[indexProvoc].IsCardDead() && player1Board.size() > 0)
+                        {  
+                            player2Board[indexProvoc].DamageCardCurrentDEF(player1Board[attackingCardIndex].GetCardATK());
+                            player1Board[attackingCardIndex].DamageCardCurrentDEF(player2Board[indexProvoc].GetCardATK());
+                            if(player1Board[attackingCardIndex].IsCardDead()) player1Board.erase(player1Board.begin() + attackingCardIndex);
+                            attackingCardIndex++;
+                        }
+                        if(player2Board[indexProvoc].IsCardDead()) player2Board.erase(player2Board.begin() + indexProvoc);
+                    }
+                    //
                     int player1InflictedDamage = BoardAttackSum(player1Board);
                     player2->DecreasePV(player1InflictedDamage);
                     if (player2->GetPV() <= 0) continue;
@@ -54,8 +73,32 @@ int main()
                     player2->IncrementMana(1);
                     player2->IncrementHand();
                     player2Board.push_back(player2->PlayHigherCostCard());
+                    //PROVOC STUFF HAPPENS HERE
+                    while (CheckForProvoc(player1Board) && player2Board.size() > 0)
+                    {
+                        int indexProvoc = GetFirstProvocCardIndex(player1Board);
+                        int attackingCardIndex = 0;
+                        while (!player1Board[indexProvoc].IsCardDead() && player2Board.size() > 0)
+                        {
+                            player1Board[indexProvoc].DamageCardCurrentDEF(player2Board[attackingCardIndex].GetCardATK());
+                            player2Board[attackingCardIndex].DamageCardCurrentDEF(player1Board[indexProvoc].GetCardATK());
+                            if (player2Board[attackingCardIndex].IsCardDead()) player2Board.erase(player2Board.begin() + attackingCardIndex);
+                            attackingCardIndex++;
+                        }
+                        if (player1Board[indexProvoc].IsCardDead()) player1Board.erase(player1Board.begin() + indexProvoc);
+                    }
+                    //
                     int player2InflictedDamage = BoardAttackSum(player2Board);
                     player1->DecreasePV(player2InflictedDamage);
+                    //Healing cards
+                    for (Card card : player1Board) 
+                    {
+                        card.HealCard();
+                    }
+                    for (Card card : player2Board)
+                    {
+                        card.HealCard();
+                    }
                 }
                 else if (i >= 500)
                 {
@@ -63,6 +106,21 @@ int main()
                     player2->IncrementMana(1);
                     player2->IncrementHand();
                     player2Board.push_back(player2->PlayHigherCostCard());
+                    //PROVOC STUFF HAPPENS HERE
+                    while (CheckForProvoc(player1Board) && player2Board.size() > 0)
+                    {
+                        int indexProvoc = GetFirstProvocCardIndex(player1Board);
+                        int attackingCardIndex = 0;
+                        while (!player1Board[indexProvoc].IsCardDead() && player2Board.size() > 0)
+                        {
+                            player1Board[indexProvoc].DamageCardCurrentDEF(player2Board[attackingCardIndex].GetCardATK());
+                            player2Board[attackingCardIndex].DamageCardCurrentDEF(player1Board[indexProvoc].GetCardATK());
+                            if (player2Board[attackingCardIndex].IsCardDead()) player2Board.erase(player2Board.begin() + attackingCardIndex);
+                            attackingCardIndex++;
+                        }
+                        if (player1Board[indexProvoc].IsCardDead()) player1Board.erase(player1Board.begin() + indexProvoc);
+                    }
+                    //
                     int player2InflictedDamage = BoardAttackSum(player2Board);
                     player1->DecreasePV(player2InflictedDamage);
                     if (player1->GetPV() <= 0) continue;
@@ -71,8 +129,32 @@ int main()
                     player1->IncrementMana(1);
                     player1->IncrementHand();
                     player1Board.push_back(player1->PlayHigherCostCard());
+                    //PROVOC STUFF HAPPENS HERE
+                    while (CheckForProvoc(player2Board) && player1Board.size() > 0)
+                    {
+                        int indexProvoc = GetFirstProvocCardIndex(player2Board);
+                        int attackingCardIndex = 0;
+                        while (!player2Board[indexProvoc].IsCardDead() && player1Board.size() > 0)
+                        {
+                            player2Board[indexProvoc].DamageCardCurrentDEF(player1Board[attackingCardIndex].GetCardATK());
+                            player1Board[attackingCardIndex].DamageCardCurrentDEF(player2Board[indexProvoc].GetCardATK());
+                            if (player1Board[attackingCardIndex].IsCardDead()) player1Board.erase(player1Board.begin() + attackingCardIndex);
+                            attackingCardIndex++;
+                        }
+                        if (player2Board[indexProvoc].IsCardDead()) player2Board.erase(player2Board.begin() + indexProvoc);
+                    }
+                    //
                     int player1InflictedDamage = BoardAttackSum(player1Board);
                     player2->DecreasePV(player1InflictedDamage);
+                    //Healing cards
+                    for (Card card : player1Board)
+                    {
+                        card.HealCard();
+                    }
+                    for (Card card : player2Board)
+                    {
+                        card.HealCard();
+                    }
                 }
                 nbTurns++;
             }
@@ -127,6 +209,21 @@ int BoardAttackSum(std::vector<Card> playerBoard) {
     return res;
 }
 
+int GetFirstProvocCardIndex(std::vector<Card> playerBoard) {
+    for (int i = 0; i < playerBoard.size(); i++) {
+        if (playerBoard[i].GetCardProvoc() == 1) return i;
+    }
+    return -1;
+}
+
+bool CheckForProvoc(std::vector<Card> playerBoard) {
+    for (int i = 0; i < playerBoard.size(); i++) {
+        if (playerBoard[i].GetCardProvoc() == 1) return true;
+    }
+    return false;
+}
+
+//EVERYTHING DATA RELATED//
 void WriteAmountOfTurnsPerGameHistogram(std::vector<int>& nbTurnData) {
     csvfile csv("AmountOfGamesPerAmountOfTurnData.csv");
     csv << "Amount of turns" <<  "Amount of games" << endrow;

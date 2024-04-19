@@ -135,7 +135,7 @@ void Player::ResetPlayerGlobal() {
 }
 
 Card Player::PlayHigherCostCard() {
-	Card higherCostCard = Card(0,0);
+	Card higherCostCard = Card(0,0, false);
 	int indexHigherCostCard = -1;
 	for (int i = 0; i < _hand.size(); i++) {
 		if (_hand[i].GetCardCost() == higherCostCard.GetCardCost()) 
