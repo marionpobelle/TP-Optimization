@@ -51,7 +51,7 @@ int main()
                     player1->IncrementMana(1);
                     player1->IncrementHand();
                     Card cardToPlay = player1->PlayHigherCostCard();
-                    if (cardToPlay.IsEqual(Card(0, 0, false, false, false))) 
+                    if (cardToPlay.IsEqual(Card(0, 0, false, false, false, false))) 
                     {
                         //Do nothing
                     }
@@ -76,11 +76,41 @@ int main()
                                         trampleDamage = player1Board[attackingCardIndex].GetCardATK() - player2Board[indexProvoc].GetCardDEF();
                                         player1Board[attackingCardIndex].RemoveAttack();
                                     }
-                                    player2Board[indexProvoc].DamageCardCurrentDEF(player1Board[attackingCardIndex].GetCardATK());
-                                    player1Board[attackingCardIndex].DamageCardCurrentDEF(player2Board[indexProvoc].GetCardATK());
-                                    player1Board[attackingCardIndex].RemoveAttack();
-                                    if (player1Board[attackingCardIndex].IsCardDead()) player1Board.erase(player1Board.begin() + attackingCardIndex);
-                                    attackingCardIndex++;
+                                    //FIRST STRIKE STUFF HERE
+                                    if (player1Board[attackingCardIndex].GetCardFirstStrike()) 
+                                    {
+                                        player2Board[indexProvoc].DamageCardCurrentDEF(player1Board[attackingCardIndex].GetCardATK());
+                                        player1Board[attackingCardIndex].RemoveAttack();
+                                        if (!player2Board[indexProvoc].IsCardDead())
+                                        {
+                                            player1Board[attackingCardIndex].DamageCardCurrentDEF(player2Board[indexProvoc].GetCardATK());
+                                        }
+                                        if (player1Board[attackingCardIndex].IsCardDead())
+                                        {
+                                            player1Board.erase(player1Board.begin() + attackingCardIndex);
+                                            trampleDamage = 0;
+                                        }
+                                        attackingCardIndex++;
+                                    }
+                                    else if (player2Board[indexProvoc].GetCardFirstStrike())
+                                    {
+                                        player1Board[attackingCardIndex].DamageCardCurrentDEF(player2Board[indexProvoc].GetCardATK());
+                                        if (!player1Board[attackingCardIndex].IsCardDead())
+                                        {
+                                            player2Board[indexProvoc].DamageCardCurrentDEF(player1Board[attackingCardIndex].GetCardATK());
+                                        }
+                                        attackingCardIndex++;
+                                    }
+                                    else
+                                    {
+                                        player2Board[indexProvoc].DamageCardCurrentDEF(player1Board[attackingCardIndex].GetCardATK());
+                                        player1Board[attackingCardIndex].DamageCardCurrentDEF(player2Board[indexProvoc].GetCardATK());
+                                        player1Board[attackingCardIndex].RemoveAttack();
+                                        if (player1Board[attackingCardIndex].IsCardDead()) player1Board.erase(player1Board.begin() + attackingCardIndex);
+                                        attackingCardIndex++;
+                                    }
+                                    //
+                                   
                                 }
                                 
                             }
@@ -96,7 +126,7 @@ int main()
                     player2->IncrementMana(1);
                     player2->IncrementHand();
                     cardToPlay = player2->PlayHigherCostCard();
-                    if (cardToPlay.IsEqual(Card(0, 0, false, false, false)))
+                    if (cardToPlay.IsEqual(Card(0, 0, false, false, false, false)))
                     {
                         //Do nothing
                     }
@@ -121,11 +151,40 @@ int main()
                                         trampleDamage = player2Board[attackingCardIndex].GetCardATK() - player1Board[indexProvoc].GetCardDEF();
                                         player2Board[attackingCardIndex].RemoveAttack();
                                     }
-                                    player1Board[indexProvoc].DamageCardCurrentDEF(player2Board[attackingCardIndex].GetCardATK());
-                                    player2Board[attackingCardIndex].DamageCardCurrentDEF(player1Board[indexProvoc].GetCardATK());
-                                    player2Board[attackingCardIndex].RemoveAttack();
-                                    if (player2Board[attackingCardIndex].IsCardDead()) player2Board.erase(player2Board.begin() + attackingCardIndex);
-                                    attackingCardIndex++;
+                                    //FIRST STRIKE STUFF HERE
+                                    if (player2Board[attackingCardIndex].GetCardFirstStrike())
+                                    {
+                                        player1Board[indexProvoc].DamageCardCurrentDEF(player2Board[attackingCardIndex].GetCardATK());
+                                        player2Board[attackingCardIndex].RemoveAttack();
+                                        if (!player1Board[indexProvoc].IsCardDead())
+                                        {
+                                            player2Board[attackingCardIndex].DamageCardCurrentDEF(player1Board[indexProvoc].GetCardATK());
+                                        }
+                                        if (player2Board[attackingCardIndex].IsCardDead())
+                                        {
+                                            player2Board.erase(player2Board.begin() + attackingCardIndex);
+                                            trampleDamage = 0;
+                                        }
+                                        attackingCardIndex++;
+                                    }
+                                    else if (player1Board[indexProvoc].GetCardFirstStrike())
+                                    {
+                                        player2Board[attackingCardIndex].DamageCardCurrentDEF(player1Board[indexProvoc].GetCardATK());
+                                        if (!player2Board[attackingCardIndex].IsCardDead())
+                                        {
+                                            player1Board[indexProvoc].DamageCardCurrentDEF(player2Board[attackingCardIndex].GetCardATK());
+                                        }
+                                        attackingCardIndex++;
+                                    }
+                                    else
+                                    {
+                                        player1Board[indexProvoc].DamageCardCurrentDEF(player2Board[attackingCardIndex].GetCardATK());
+                                        player2Board[attackingCardIndex].DamageCardCurrentDEF(player1Board[indexProvoc].GetCardATK());
+                                        player2Board[attackingCardIndex].RemoveAttack();
+                                        if (player2Board[attackingCardIndex].IsCardDead()) player2Board.erase(player2Board.begin() + attackingCardIndex);
+                                        attackingCardIndex++;
+                                    }
+                                    //
                                 }    
                             }
                             if (player1Board[indexProvoc].IsCardDead()) player1Board.erase(player1Board.begin() + indexProvoc);
@@ -161,7 +220,7 @@ int main()
                     player2->IncrementMana(1);
                     player2->IncrementHand();
                     Card cardToPlay = player2->PlayHigherCostCard();
-                    if (cardToPlay.IsEqual(Card(0, 0, false, false, false)))
+                    if (cardToPlay.IsEqual(Card(0, 0, false, false, false, false)))
                     {
                         //Do nothing
                     }
@@ -186,12 +245,41 @@ int main()
                                         trampleDamage = player2Board[attackingCardIndex].GetCardATK() - player1Board[indexProvoc].GetCardDEF();
                                         player2Board[attackingCardIndex].RemoveAttack();
                                     }
-                                    player1Board[indexProvoc].DamageCardCurrentDEF(player2Board[attackingCardIndex].GetCardATK());
-                                    player2Board[attackingCardIndex].DamageCardCurrentDEF(player1Board[indexProvoc].GetCardATK());
-                                    player2Board[attackingCardIndex].RemoveAttack();
-                                    if (player2Board[attackingCardIndex].IsCardDead()) player2Board.erase(player2Board.begin() + attackingCardIndex);
-                                    attackingCardIndex++;
-                                }                
+                                    //FIRST STRIKE STUFF HERE
+                                    if (player2Board[attackingCardIndex].GetCardFirstStrike())
+                                    {
+                                        player1Board[indexProvoc].DamageCardCurrentDEF(player2Board[attackingCardIndex].GetCardATK());
+                                        player2Board[attackingCardIndex].RemoveAttack();
+                                        if (!player1Board[indexProvoc].IsCardDead())
+                                        {
+                                            player2Board[attackingCardIndex].DamageCardCurrentDEF(player1Board[indexProvoc].GetCardATK());
+                                        }
+                                        if (player2Board[attackingCardIndex].IsCardDead())
+                                        {
+                                            player2Board.erase(player2Board.begin() + attackingCardIndex);
+                                            trampleDamage = 0;
+                                        }
+                                        attackingCardIndex++;
+                                    }
+                                    else if (player1Board[indexProvoc].GetCardFirstStrike())
+                                    {
+                                        player2Board[attackingCardIndex].DamageCardCurrentDEF(player1Board[indexProvoc].GetCardATK());
+                                        if (!player2Board[attackingCardIndex].IsCardDead())
+                                        {
+                                            player1Board[indexProvoc].DamageCardCurrentDEF(player2Board[attackingCardIndex].GetCardATK());
+                                        }
+                                        attackingCardIndex++;
+                                    }
+                                    else
+                                    {
+                                        player1Board[indexProvoc].DamageCardCurrentDEF(player2Board[attackingCardIndex].GetCardATK());
+                                        player2Board[attackingCardIndex].DamageCardCurrentDEF(player1Board[indexProvoc].GetCardATK());
+                                        player2Board[attackingCardIndex].RemoveAttack();
+                                        if (player2Board[attackingCardIndex].IsCardDead()) player2Board.erase(player2Board.begin() + attackingCardIndex);
+                                        attackingCardIndex++;
+                                    }
+                                    //
+                                }
                             }
                             if (player1Board[indexProvoc].IsCardDead()) player1Board.erase(player1Board.begin() + indexProvoc);
                         }
@@ -206,7 +294,7 @@ int main()
                     player1->IncrementMana(1);
                     player1->IncrementHand();
                     cardToPlay = player1->PlayHigherCostCard();
-                    if (cardToPlay.IsEqual(Card(0, 0, false, false, false)))
+                    if (cardToPlay.IsEqual(Card(0, 0, false, false, false, false)))
                     {
                         //Do nothing
                     }
@@ -231,13 +319,43 @@ int main()
                                         trampleDamage = player1Board[attackingCardIndex].GetCardATK() - player2Board[indexProvoc].GetCardDEF();
                                         player1Board[attackingCardIndex].RemoveAttack();
                                     }
-                                    player2Board[indexProvoc].DamageCardCurrentDEF(player1Board[attackingCardIndex].GetCardATK());
-                                    player1Board[attackingCardIndex].DamageCardCurrentDEF(player2Board[indexProvoc].GetCardATK());
-                                    player1Board[attackingCardIndex].RemoveAttack();
-                                    if (player1Board[attackingCardIndex].IsCardDead()) player1Board.erase(player1Board.begin() + attackingCardIndex);
-                                    attackingCardIndex++;
+                                    //FIRST STRIKE STUFF HERE
+                                    if (player1Board[attackingCardIndex].GetCardFirstStrike())
+                                    {
+                                        player2Board[indexProvoc].DamageCardCurrentDEF(player1Board[attackingCardIndex].GetCardATK());
+                                        player1Board[attackingCardIndex].RemoveAttack();
+                                        if (!player2Board[indexProvoc].IsCardDead())
+                                        {
+                                            player1Board[attackingCardIndex].DamageCardCurrentDEF(player2Board[indexProvoc].GetCardATK());
+                                        }
+                                        if (player1Board[attackingCardIndex].IsCardDead())
+                                        {
+                                            player1Board.erase(player1Board.begin() + attackingCardIndex);
+                                            trampleDamage = 0;
+                                        }
+                                        attackingCardIndex++;
+                                    }
+                                    else if (player2Board[indexProvoc].GetCardFirstStrike())
+                                    {
+                                        player1Board[attackingCardIndex].DamageCardCurrentDEF(player2Board[indexProvoc].GetCardATK());
+                                        if (!player1Board[attackingCardIndex].IsCardDead())
+                                        {
+                                            player2Board[indexProvoc].DamageCardCurrentDEF(player1Board[attackingCardIndex].GetCardATK());
+                                        }
+                                        attackingCardIndex++;
+                                    }
+                                    else
+                                    {
+                                        player2Board[indexProvoc].DamageCardCurrentDEF(player1Board[attackingCardIndex].GetCardATK());
+                                        player1Board[attackingCardIndex].DamageCardCurrentDEF(player2Board[indexProvoc].GetCardATK());
+                                        player1Board[attackingCardIndex].RemoveAttack();
+                                        if (player1Board[attackingCardIndex].IsCardDead()) player1Board.erase(player1Board.begin() + attackingCardIndex);
+                                        attackingCardIndex++;
+                                    }
+                                    //
+
                                 }
-                                
+
                             }
                             if (player2Board[indexProvoc].IsCardDead()) player2Board.erase(player2Board.begin() + indexProvoc);
                         }

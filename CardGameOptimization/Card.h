@@ -6,7 +6,7 @@ class Card
 {
 public:
 
-    Card(int atk, int def, bool provoc, bool trample, bool distortion);
+    Card(int atk, int def, bool provoc, bool trample, bool distortion, bool firstStrike);
 
     int GetCardATK();
 
@@ -34,6 +34,8 @@ public:
 
     bool GetCardDistortion();
 
+    bool GetCardFirstStrike();
+
     bool IsEqual(Card card);
 
     void CopyCard(Card card);
@@ -48,7 +50,7 @@ public:
             << "\"HasTaunt\":" << (r_a._provoc ? "true" : "false") << ","
             << "\"HasTrample\":" << (r_a._trample ? "true" : "false") << ","
             << "\"HasDistortion\":" << (r_a._distortion ? "true" : "false") << ","
-            << "\"HasFirstStrike\":" << "false"
+            << "\"HasFirstStrike\":" << (r_a._firstStrike ? "true" : "false")
             << " }";
     }
 
@@ -60,6 +62,7 @@ private:
     bool _provoc;
     bool _trample;
     bool _distortion;
+    bool _firstStrike;
 
     bool _canAttack;
 

@@ -1,12 +1,14 @@
 #include "Card.h"
 
-Card::Card(int atk, int def, bool provoc, bool trample, bool distortion) {
+Card::Card(int atk, int def, bool provoc, bool trample, bool distortion, bool firstStrike) {
     _atk = atk;
     _maxDef = def;
     _provoc = provoc;
     _trample = trample;
     _distortion = distortion;
-    _cost = ceil(((_atk + _maxDef) / 2.0f) + provoc * 1.5f + trample + distortion);
+    _firstStrike = firstStrike;
+    _currentDef = def;
+    _cost = ceil(((_atk + _maxDef) / 2.0f) + provoc * 1.5f + trample + distortion + firstStrike);
 
     _canAttack = true;
 }
@@ -51,8 +53,12 @@ bool Card::GetCardDistortion() {
     return _distortion;
 }
 
+bool Card::GetCardFirstStrike() {
+    return _firstStrike;
+}
+
 bool Card::IsEqual(Card card) {
-    return (_atk == card.GetCardATK() && _maxDef == card.GetCardDEF() && _cost == card.GetCardCost() && _provoc == card.GetCardProvoc() && _trample == card.GetCardTrample() && _distortion == card.GetCardDistortion());
+    return (_atk == card.GetCardATK() && _maxDef == card.GetCardDEF() && _cost == card.GetCardCost() && _provoc == card.GetCardProvoc() && _trample == card.GetCardTrample() && _distortion == card.GetCardDistortion() && _firstStrike == card.GetCardFirstStrike());
 }
 
 void Card::CopyCard(Card card) {
@@ -61,7 +67,7 @@ void Card::CopyCard(Card card) {
     _cost = card.GetCardCost();
     _provoc = card.GetCardProvoc();
     _trample = card.GetCardTrample();
-    _distortion = card.GetCardDistortion();
+    _firstStrike = card.GetCardFirstStrike();
 }
 
 void Card::RestoreAttack() {
