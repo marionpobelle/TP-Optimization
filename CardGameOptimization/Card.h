@@ -6,7 +6,7 @@ class Card
 {
 public:
 
-    Card(int atk, int def, bool provoc, bool trample);
+    Card(int atk, int def, bool provoc, bool trample, bool distortion);
 
     int GetCardATK();
 
@@ -18,6 +18,12 @@ public:
 
     void HealCard();
 
+    void RestoreAttack();
+
+    void RemoveAttack();
+
+    bool CanAttack();
+
     bool IsCardDead();
 
     float GetCardCost();
@@ -25,6 +31,8 @@ public:
     bool GetCardProvoc();
 
     bool GetCardTrample();
+
+    bool GetCardDistortion();
 
     bool IsEqual(Card card);
 
@@ -39,7 +47,7 @@ public:
             << "\"Defense\":" << r_a._maxDef << ","
             << "\"HasTaunt\":" << (r_a._provoc ? "true" : "false") << ","
             << "\"HasTrample\":" << (r_a._trample ? "true" : "false") << ","
-            << "\"HasDistortion\":" << "false" << ","
+            << "\"HasDistortion\":" << (r_a._distortion ? "true" : "false") << ","
             << "\"HasFirstStrike\":" << "false"
             << " }";
     }
@@ -51,5 +59,8 @@ private:
     int _currentDef;
     bool _provoc;
     bool _trample;
+    bool _distortion;
+
+    bool _canAttack;
 
 };

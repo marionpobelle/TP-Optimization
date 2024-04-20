@@ -138,7 +138,7 @@ void Player::ResetPlayerGlobal() {
 }
 
 Card Player::PlayHigherCostCard() {
-	Card higherCostCard = Card(0,0,false,false);
+	Card higherCostCard = Card(0,0,false,false, false);
 	int indexHigherCostCard = -1;
 	for (int i = 0; i < _hand.size(); i++) {
 		if (_hand[i].GetCardCost() == higherCostCard.GetCardCost()) 
@@ -157,7 +157,7 @@ Card Player::PlayHigherCostCard() {
 			indexHigherCostCard = i;
 		}
 	}
-	if(!higherCostCard.IsEqual(Card(0,0,false,false))) _hand.erase(_hand.begin() + indexHigherCostCard);
+	if(!higherCostCard.IsEqual(Card(0,0,false,false, false))) _hand.erase(_hand.begin() + indexHigherCostCard);
 	return higherCostCard;
 }
 
@@ -227,13 +227,21 @@ void Player::WriteAmountOfCardsPerAbilityHistogram(std::vector<Card> deckData, s
 	int amountOfNoAbility = 0;
 	int amountOfProvoc = 0;
 	int amountOfTrample = 0;
+	int amountOfDistortion = 0;
 	int amountOfProvocTrample = 0;
+	int amountOfProvocDistortion = 0;
+	int amountOfTrampleDistortion = 0;
+	int amountOfProvocTrampleDistortion = 0;
 	for (int i = 0; i < deckData.size(); i++)
 	{
-		if (deckData[i].GetCardProvoc() == true || deckData[i].GetCardTrample() == true) {
-			if (deckData[i].GetCardProvoc() == true && deckData[i].GetCardTrample() == false) amountOfProvoc++;
-			else if (deckData[i].GetCardProvoc() == false && deckData[i].GetCardTrample() == true) amountOfTrample++;
-			else if (deckData[i].GetCardProvoc() == true && deckData[i].GetCardTrample() == true) amountOfProvocTrample++;
+		if (deckData[i].GetCardProvoc() == true || deckData[i].GetCardTrample() == true || deckData[i].GetCardDistortion() == true) {
+			if (deckData[i].GetCardProvoc() == true && deckData[i].GetCardTrample() == false && deckData[i].GetCardDistortion() == false) amountOfProvoc++;
+			else if (deckData[i].GetCardProvoc() == false && deckData[i].GetCardTrample() == true && deckData[i].GetCardDistortion() == false) amountOfTrample++;
+			else if (deckData[i].GetCardProvoc() == false && deckData[i].GetCardTrample() == false && deckData[i].GetCardDistortion() == true) amountOfDistortion++;
+			else if (deckData[i].GetCardProvoc() == true && deckData[i].GetCardTrample() == true && deckData[i].GetCardDistortion() == false) amountOfProvocTrample++;
+			else if (deckData[i].GetCardProvoc() == true && deckData[i].GetCardTrample() == false && deckData[i].GetCardDistortion() == true) amountOfProvocDistortion++;
+			else if (deckData[i].GetCardProvoc() == false && deckData[i].GetCardTrample() == true && deckData[i].GetCardDistortion() == true) amountOfTrampleDistortion++;
+			else if (deckData[i].GetCardProvoc() == true && deckData[i].GetCardTrample() == true && deckData[i].GetCardDistortion() == true) amountOfProvocTrampleDistortion++;
 		}
 		else
 		{
@@ -244,7 +252,11 @@ void Player::WriteAmountOfCardsPerAbilityHistogram(std::vector<Card> deckData, s
 	csv << "No ability" << amountOfNoAbility << endrow;
 	csv << "Provoc" << amountOfProvoc << endrow;
 	csv << "Trample" << amountOfTrample << endrow;
+	csv << "Distortion" << amountOfDistortion << endrow;
 	csv << "Provoc + Trample" << amountOfProvocTrample << endrow;
+	csv << "Provoc + Distortion" << amountOfProvocDistortion << endrow;
+	csv << "Trample + Distortion" << amountOfTrampleDistortion << endrow;
+	csv << "Provoc + Trample + Distortion" << amountOfProvocTrampleDistortion << endrow;
 }
 
 void Player::WriteJSONDeckFile() {

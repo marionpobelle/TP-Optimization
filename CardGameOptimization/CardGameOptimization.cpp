@@ -51,7 +51,7 @@ int main()
                     player1->IncrementMana(1);
                     player1->IncrementHand();
                     Card cardToPlay = player1->PlayHigherCostCard();
-                    if (cardToPlay.IsEqual(Card(0, 0, false, false))) 
+                    if (cardToPlay.IsEqual(Card(0, 0, false, false, false))) 
                     {
                         //Do nothing
                     }
@@ -65,14 +65,24 @@ int main()
                             int attackingCardIndex = 0;
                             while (!player2Board[indexProvoc].IsCardDead() && player1Board.size() > 0)
                             {
-                                if (player1Board[attackingCardIndex].GetCardATK() > player2Board[indexProvoc].GetCardDEF() && player1Board[attackingCardIndex].GetCardTrample())
+                                if (player1Board[attackingCardIndex].GetCardDistortion() == true && player2Board[indexProvoc].GetCardDistortion() == false) 
                                 {
-                                    trampleDamage = player1Board[attackingCardIndex].GetCardATK() - player2Board[indexProvoc].GetCardDEF();
+                                    attackingCardIndex++;
                                 }
-                                player2Board[indexProvoc].DamageCardCurrentDEF(player1Board[attackingCardIndex].GetCardATK());
-                                player1Board[attackingCardIndex].DamageCardCurrentDEF(player2Board[indexProvoc].GetCardATK());
-                                if (player1Board[attackingCardIndex].IsCardDead()) player1Board.erase(player1Board.begin() + attackingCardIndex);
-                                attackingCardIndex++;
+                                else
+                                {
+                                    if (player1Board[attackingCardIndex].GetCardATK() > player2Board[indexProvoc].GetCardDEF() && player1Board[attackingCardIndex].GetCardTrample())
+                                    {
+                                        trampleDamage = player1Board[attackingCardIndex].GetCardATK() - player2Board[indexProvoc].GetCardDEF();
+                                        player1Board[attackingCardIndex].RemoveAttack();
+                                    }
+                                    player2Board[indexProvoc].DamageCardCurrentDEF(player1Board[attackingCardIndex].GetCardATK());
+                                    player1Board[attackingCardIndex].DamageCardCurrentDEF(player2Board[indexProvoc].GetCardATK());
+                                    player1Board[attackingCardIndex].RemoveAttack();
+                                    if (player1Board[attackingCardIndex].IsCardDead()) player1Board.erase(player1Board.begin() + attackingCardIndex);
+                                    attackingCardIndex++;
+                                }
+                                
                             }
                             if (player2Board[indexProvoc].IsCardDead()) player2Board.erase(player2Board.begin() + indexProvoc);
                         }
@@ -86,7 +96,7 @@ int main()
                     player2->IncrementMana(1);
                     player2->IncrementHand();
                     cardToPlay = player2->PlayHigherCostCard();
-                    if (cardToPlay.IsEqual(Card(0, 0, false, false)))
+                    if (cardToPlay.IsEqual(Card(0, 0, false, false, false)))
                     {
                         //Do nothing
                     }
@@ -100,14 +110,23 @@ int main()
                             int attackingCardIndex = 0;
                             while (!player1Board[indexProvoc].IsCardDead() && player2Board.size() > 0)
                             {
-                                if (player2Board[attackingCardIndex].GetCardATK() > player1Board[indexProvoc].GetCardDEF() && player2Board[attackingCardIndex].GetCardTrample())
+                                if(player2Board[attackingCardIndex].GetCardDistortion() == true && player1Board[indexProvoc].GetCardDistortion() == false)
                                 {
-                                    trampleDamage = player2Board[attackingCardIndex].GetCardATK() - player1Board[indexProvoc].GetCardDEF();
+                                    attackingCardIndex++;
                                 }
-                                player1Board[indexProvoc].DamageCardCurrentDEF(player2Board[attackingCardIndex].GetCardATK());
-                                player2Board[attackingCardIndex].DamageCardCurrentDEF(player1Board[indexProvoc].GetCardATK());
-                                if (player2Board[attackingCardIndex].IsCardDead()) player2Board.erase(player2Board.begin() + attackingCardIndex);
-                                attackingCardIndex++;
+                                else 
+                                {
+                                    if (player2Board[attackingCardIndex].GetCardATK() > player1Board[indexProvoc].GetCardDEF() && player2Board[attackingCardIndex].GetCardTrample())
+                                    {
+                                        trampleDamage = player2Board[attackingCardIndex].GetCardATK() - player1Board[indexProvoc].GetCardDEF();
+                                        player2Board[attackingCardIndex].RemoveAttack();
+                                    }
+                                    player1Board[indexProvoc].DamageCardCurrentDEF(player2Board[attackingCardIndex].GetCardATK());
+                                    player2Board[attackingCardIndex].DamageCardCurrentDEF(player1Board[indexProvoc].GetCardATK());
+                                    player2Board[attackingCardIndex].RemoveAttack();
+                                    if (player2Board[attackingCardIndex].IsCardDead()) player2Board.erase(player2Board.begin() + attackingCardIndex);
+                                    attackingCardIndex++;
+                                }    
                             }
                             if (player1Board[indexProvoc].IsCardDead()) player1Board.erase(player1Board.begin() + indexProvoc);
                         }
@@ -124,6 +143,15 @@ int main()
                     {
                         card.HealCard();
                     }
+                    //Restoring attack for cards
+                    for (Card card : player1Board)
+                    {
+                        card.RestoreAttack();
+                    }
+                    for (Card card : player2Board)
+                    {
+                        card.RestoreAttack();
+                    }
                     trampleDamage = 0;
                 }
                 else if (i >= 500)
@@ -133,7 +161,7 @@ int main()
                     player2->IncrementMana(1);
                     player2->IncrementHand();
                     Card cardToPlay = player2->PlayHigherCostCard();
-                    if (cardToPlay.IsEqual(Card(0, 0, false, false)))
+                    if (cardToPlay.IsEqual(Card(0, 0, false, false, false)))
                     {
                         //Do nothing
                     }
@@ -147,14 +175,23 @@ int main()
                             int attackingCardIndex = 0;
                             while (!player1Board[indexProvoc].IsCardDead() && player2Board.size() > 0)
                             {
-                                if (player2Board[attackingCardIndex].GetCardATK() > player1Board[indexProvoc].GetCardDEF() && player2Board[attackingCardIndex].GetCardTrample())
+                                if (player2Board[attackingCardIndex].GetCardDistortion() == true && player1Board[indexProvoc].GetCardDistortion() == false)
                                 {
-                                    trampleDamage = player2Board[attackingCardIndex].GetCardATK() - player1Board[indexProvoc].GetCardDEF();
+                                    attackingCardIndex++;
                                 }
-                                player1Board[indexProvoc].DamageCardCurrentDEF(player2Board[attackingCardIndex].GetCardATK());
-                                player2Board[attackingCardIndex].DamageCardCurrentDEF(player1Board[indexProvoc].GetCardATK());
-                                if (player2Board[attackingCardIndex].IsCardDead()) player2Board.erase(player2Board.begin() + attackingCardIndex);
-                                attackingCardIndex++;
+                                else
+                                {
+                                    if (player2Board[attackingCardIndex].GetCardATK() > player1Board[indexProvoc].GetCardDEF() && player2Board[attackingCardIndex].GetCardTrample())
+                                    {
+                                        trampleDamage = player2Board[attackingCardIndex].GetCardATK() - player1Board[indexProvoc].GetCardDEF();
+                                        player2Board[attackingCardIndex].RemoveAttack();
+                                    }
+                                    player1Board[indexProvoc].DamageCardCurrentDEF(player2Board[attackingCardIndex].GetCardATK());
+                                    player2Board[attackingCardIndex].DamageCardCurrentDEF(player1Board[indexProvoc].GetCardATK());
+                                    player2Board[attackingCardIndex].RemoveAttack();
+                                    if (player2Board[attackingCardIndex].IsCardDead()) player2Board.erase(player2Board.begin() + attackingCardIndex);
+                                    attackingCardIndex++;
+                                }                
                             }
                             if (player1Board[indexProvoc].IsCardDead()) player1Board.erase(player1Board.begin() + indexProvoc);
                         }
@@ -169,7 +206,7 @@ int main()
                     player1->IncrementMana(1);
                     player1->IncrementHand();
                     cardToPlay = player1->PlayHigherCostCard();
-                    if (cardToPlay.IsEqual(Card(0, 0, false, false)))
+                    if (cardToPlay.IsEqual(Card(0, 0, false, false, false)))
                     {
                         //Do nothing
                     }
@@ -183,14 +220,24 @@ int main()
                             int attackingCardIndex = 0;
                             while (!player2Board[indexProvoc].IsCardDead() && player1Board.size() > 0)
                             {
-                                if (player1Board[attackingCardIndex].GetCardATK() > player2Board[indexProvoc].GetCardDEF() && player1Board[attackingCardIndex].GetCardTrample())
+                                if(player1Board[attackingCardIndex].GetCardDistortion() == true && player2Board[indexProvoc].GetCardDistortion() == false)
                                 {
-                                    trampleDamage = player1Board[attackingCardIndex].GetCardATK() - player2Board[indexProvoc].GetCardDEF();
+                                    attackingCardIndex++;
                                 }
-                                player2Board[indexProvoc].DamageCardCurrentDEF(player1Board[attackingCardIndex].GetCardATK());
-                                player1Board[attackingCardIndex].DamageCardCurrentDEF(player2Board[indexProvoc].GetCardATK());
-                                if (player1Board[attackingCardIndex].IsCardDead()) player1Board.erase(player1Board.begin() + attackingCardIndex);
-                                attackingCardIndex++;
+                                else
+                                {
+                                    if (player1Board[attackingCardIndex].GetCardATK() > player2Board[indexProvoc].GetCardDEF() && player1Board[attackingCardIndex].GetCardTrample())
+                                    {
+                                        trampleDamage = player1Board[attackingCardIndex].GetCardATK() - player2Board[indexProvoc].GetCardDEF();
+                                        player1Board[attackingCardIndex].RemoveAttack();
+                                    }
+                                    player2Board[indexProvoc].DamageCardCurrentDEF(player1Board[attackingCardIndex].GetCardATK());
+                                    player1Board[attackingCardIndex].DamageCardCurrentDEF(player2Board[indexProvoc].GetCardATK());
+                                    player1Board[attackingCardIndex].RemoveAttack();
+                                    if (player1Board[attackingCardIndex].IsCardDead()) player1Board.erase(player1Board.begin() + attackingCardIndex);
+                                    attackingCardIndex++;
+                                }
+                                
                             }
                             if (player2Board[indexProvoc].IsCardDead()) player2Board.erase(player2Board.begin() + indexProvoc);
                         }
@@ -206,6 +253,15 @@ int main()
                     for (Card card : player2Board)
                     {
                         card.HealCard();
+                    }
+                    //Restoring attack for cards
+                    for (Card card : player1Board)
+                    {
+                        card.RestoreAttack();
+                    }
+                    for (Card card : player2Board)
+                    {
+                        card.RestoreAttack();
                     }
                 }
                 nbTurns++;
@@ -262,7 +318,9 @@ int BoardAttackSum(std::vector<Card> playerBoard) {
     if (playerBoard.size() != 0)
     {
         for (int i = 0; i < playerBoard.size(); i++) {
-            res += playerBoard[i].GetCardATK();
+            if (playerBoard[i].CanAttack()) {
+                res += playerBoard[i].GetCardATK();
+            }
         }
     }  
     return res;

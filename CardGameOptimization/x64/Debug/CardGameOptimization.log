@@ -1,42 +1,20 @@
 ﻿  CardGameOptimization.cpp
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(33,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(224,47): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(224,47): warning C4244:         with
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(224,47): warning C4244:         [
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(224,47): warning C4244:             _Ty=int
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(224,47): warning C4244:         ]
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(227,61): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(229,35): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(294,43): warning C4244: 'argument': conversion from '__int64' to '_Ty', possible loss of data
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(294,43): warning C4244:         with
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(294,43): warning C4244:         [
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(294,43): warning C4244:             _Ty=int
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(294,43): warning C4244:         ]
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(310,41): warning C4244: 'argument': conversion from '__int64' to '_Ty', possible loss of data
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(310,41): warning C4244:         with
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(310,41): warning C4244:         [
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(310,41): warning C4244:             _Ty=int
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(310,41): warning C4244:         ]
-  Player.cpp
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(169,52): warning C4244: 'argument': conversion from 'float' to '_Ty', possible loss of data
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(169,52): warning C4244:         with
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(169,52): warning C4244:         [
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(169,52): warning C4244:             _Ty=int
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(169,52): warning C4244:         ]
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(175,37): warning C4244: 'argument': conversion from '__int64' to '_Ty', possible loss of data
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(175,37): warning C4244:         with
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(175,37): warning C4244:         [
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(175,37): warning C4244:             _Ty=int
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(175,37): warning C4244:         ]
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(195,37): warning C4244: 'argument': conversion from '__int64' to '_Ty', possible loss of data
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(195,37): warning C4244:         with
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(195,37): warning C4244:         [
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(195,37): warning C4244:             _Ty=int
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(195,37): warning C4244:         ]
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(215,37): warning C4244: 'argument': conversion from '__int64' to '_Ty', possible loss of data
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(215,37): warning C4244:         with
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(215,37): warning C4244:         [
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(215,37): warning C4244:             _Ty=int
-C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\CardGameOptimization\Player.cpp(215,37): warning C4244:         ]
-  Generating Code...
-  CardGameOptimization.vcxproj -> C:\Users\mario\OneDrive\Documents\PROJECTS\TP-Optimization\x64\Debug\CardGameOptimization.exe
+C:\Users\Marion\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(33,15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Marion\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(280,47): warning C4244: 'argument': conversion from 'double' to '_Ty', possible loss of data
+C:\Users\Marion\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(280,47): warning C4244:         with
+C:\Users\Marion\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(280,47): warning C4244:         [
+C:\Users\Marion\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(280,47): warning C4244:             _Ty=int
+C:\Users\Marion\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(280,47): warning C4244:         ]
+C:\Users\Marion\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(283,61): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Marion\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(285,35): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Marion\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(352,43): warning C4244: 'argument': conversion from '__int64' to '_Ty', possible loss of data
+C:\Users\Marion\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(352,43): warning C4244:         with
+C:\Users\Marion\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(352,43): warning C4244:         [
+C:\Users\Marion\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(352,43): warning C4244:             _Ty=int
+C:\Users\Marion\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(352,43): warning C4244:         ]
+C:\Users\Marion\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(368,41): warning C4244: 'argument': conversion from '__int64' to '_Ty', possible loss of data
+C:\Users\Marion\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(368,41): warning C4244:         with
+C:\Users\Marion\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(368,41): warning C4244:         [
+C:\Users\Marion\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(368,41): warning C4244:             _Ty=int
+C:\Users\Marion\Documents\PROJECTS\TP-Optimization\CardGameOptimization\CardGameOptimization.cpp(368,41): warning C4244:         ]
+  CardGameOptimization.vcxproj -> C:\Users\Marion\Documents\PROJECTS\TP-Optimization\x64\Debug\CardGameOptimization.exe
