@@ -77,7 +77,7 @@ int main()
                                         player1Board[attackingCardIndex].RemoveAttack();
                                     }
                                     //FIRST STRIKE STUFF HERE
-                                    if (player1Board[attackingCardIndex].GetCardFirstStrike()) 
+                                    if (player1Board[attackingCardIndex].GetCardFirstStrike() && !player2Board[indexProvoc].GetCardFirstStrike())
                                     {
                                         player2Board[indexProvoc].DamageCardCurrentDEF(player1Board[attackingCardIndex].GetCardATK());
                                         player1Board[attackingCardIndex].RemoveAttack();
@@ -92,7 +92,7 @@ int main()
                                         }
                                         attackingCardIndex++;
                                     }
-                                    else if (player2Board[indexProvoc].GetCardFirstStrike())
+                                    else if (player2Board[indexProvoc].GetCardFirstStrike() && !player1Board[attackingCardIndex].GetCardFirstStrike())
                                     {
                                         player1Board[attackingCardIndex].DamageCardCurrentDEF(player2Board[indexProvoc].GetCardATK());
                                         if (!player1Board[attackingCardIndex].IsCardDead())
@@ -152,7 +152,7 @@ int main()
                                         player2Board[attackingCardIndex].RemoveAttack();
                                     }
                                     //FIRST STRIKE STUFF HERE
-                                    if (player2Board[attackingCardIndex].GetCardFirstStrike())
+                                    if (player2Board[attackingCardIndex].GetCardFirstStrike() && !player1Board[indexProvoc].GetCardFirstStrike())
                                     {
                                         player1Board[indexProvoc].DamageCardCurrentDEF(player2Board[attackingCardIndex].GetCardATK());
                                         player2Board[attackingCardIndex].RemoveAttack();
@@ -167,7 +167,7 @@ int main()
                                         }
                                         attackingCardIndex++;
                                     }
-                                    else if (player1Board[indexProvoc].GetCardFirstStrike())
+                                    else if (player1Board[indexProvoc].GetCardFirstStrike() && !player2Board[attackingCardIndex].GetCardFirstStrike())
                                     {
                                         player2Board[attackingCardIndex].DamageCardCurrentDEF(player1Board[indexProvoc].GetCardATK());
                                         if (!player2Board[attackingCardIndex].IsCardDead())
@@ -246,7 +246,7 @@ int main()
                                         player2Board[attackingCardIndex].RemoveAttack();
                                     }
                                     //FIRST STRIKE STUFF HERE
-                                    if (player2Board[attackingCardIndex].GetCardFirstStrike())
+                                    if (player2Board[attackingCardIndex].GetCardFirstStrike() && !player1Board[indexProvoc].GetCardFirstStrike())
                                     {
                                         player1Board[indexProvoc].DamageCardCurrentDEF(player2Board[attackingCardIndex].GetCardATK());
                                         player2Board[attackingCardIndex].RemoveAttack();
@@ -261,7 +261,7 @@ int main()
                                         }
                                         attackingCardIndex++;
                                     }
-                                    else if (player1Board[indexProvoc].GetCardFirstStrike())
+                                    else if (player1Board[indexProvoc].GetCardFirstStrike() && !player2Board[attackingCardIndex].GetCardFirstStrike())
                                     {
                                         player2Board[attackingCardIndex].DamageCardCurrentDEF(player1Board[indexProvoc].GetCardATK());
                                         if (!player2Board[attackingCardIndex].IsCardDead())
@@ -320,7 +320,7 @@ int main()
                                         player1Board[attackingCardIndex].RemoveAttack();
                                     }
                                     //FIRST STRIKE STUFF HERE
-                                    if (player1Board[attackingCardIndex].GetCardFirstStrike())
+                                    if (player1Board[attackingCardIndex].GetCardFirstStrike() && !player2Board[indexProvoc].GetCardFirstStrike())
                                     {
                                         player2Board[indexProvoc].DamageCardCurrentDEF(player1Board[attackingCardIndex].GetCardATK());
                                         player1Board[attackingCardIndex].RemoveAttack();
@@ -335,7 +335,7 @@ int main()
                                         }
                                         attackingCardIndex++;
                                     }
-                                    else if (player2Board[indexProvoc].GetCardFirstStrike())
+                                    else if (player2Board[indexProvoc].GetCardFirstStrike() && !player1Board[attackingCardIndex].GetCardFirstStrike())
                                     {
                                         player1Board[attackingCardIndex].DamageCardCurrentDEF(player2Board[indexProvoc].GetCardATK());
                                         if (!player1Board[attackingCardIndex].IsCardDead())
