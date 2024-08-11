@@ -19,7 +19,7 @@ Each player has one resource: mana. Each player's mana rises incrementally at th
 Each player has a hand formed from his deck. He starts with 4 cards in hand, then gains one more card each round.
 
 **-- Sequence --**\
-A round of play proceeds as follows:\
+A round proceeds as follows:\
 For each player:\
 1- mana+1.\
 2- draw a card from the deck, hand+1.\
